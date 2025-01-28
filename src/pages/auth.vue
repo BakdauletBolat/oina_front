@@ -43,10 +43,12 @@ onMounted(async ()=>{
 
     }
     catch (error) {
+      showNotify("")
       //@ts-ignore
       if (error?.response?.data) {
         //@ts-ignore
         showNotify(error!.response.data.detail);
+        showToast(error!.response!.data.toString());
         showToast('Перенаправляем на главный экран...');
         setTimeout(()=>{
             router.push({ name: "home" });
