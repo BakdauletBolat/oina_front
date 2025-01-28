@@ -107,7 +107,7 @@ function goUserPage(id: number | undefined) {
       </section>
       <section class="result p-4 flex justify-between gap-2">
         <div class="flex items-center gap-8">
-          <div @click="()=>goUserPage(gameStore.game?.rival.id)" class="flex cursor-pointer items-center flex-col">
+          <div @click="()=>goUserPage(gameStore.game?.author.id)" class="flex cursor-pointer items-center flex-col">
             <div class="relative">
               <king-icon-vue v-if="gameStore.game.author.id == gameStore.game.winner?.id"
                              class="absolute w-[40px] h-[40px] -top-[20px] -rotate-[20deg] -left-[5px] z-10"></king-icon-vue>

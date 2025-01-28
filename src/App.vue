@@ -43,9 +43,9 @@ onMounted(async () => {
 <template>
   <main class="!bg-[#F7F7F7] min-h-screen">
     <section >
-      <van-tabbar v-model="activeTabBar" @change="onChange">
-        <van-tabbar-item icon="home-o">Главная</van-tabbar-item>
-        <van-tabbar-item icon="setting-o">Профиль</van-tabbar-item>
+      <van-tabbar v-model="activeTabBar">
+        <van-tabbar-item @click="()=>onChange(0)" icon="home-o">Главная</van-tabbar-item>
+        <van-tabbar-item @click="()=>onChange(1)" icon="setting-o">Профиль</van-tabbar-item>
       </van-tabbar>
     </section>
     <RouterView/>
