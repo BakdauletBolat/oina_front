@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {type User, useUserStore} from "../stores/user-store.ts";
 import {onMounted, ref} from "vue";
-import {Icon, Loading, showDialog, showToast} from "vant";
+import {Icon, Loading, showToast} from "vant";
 import {useRoute, useRouter} from "vue-router";
 import {useGameStore} from "../stores/game-store.ts";
 

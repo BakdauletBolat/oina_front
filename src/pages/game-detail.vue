@@ -69,7 +69,7 @@ function goBack() {
   router.back()
 }
 
-function goUserPage(id: number) {
+function goUserPage(id: number | undefined) {
   router.push({
     name: "user-profile",
     params: {
@@ -126,7 +126,7 @@ function goUserPage(id: number) {
         <div class="flex items-center gap-8 justify-end">
           <div v-if="gameStore.game.status == 3" class="text-2xl">{{ gameStore.game.result?.game.rival_score }}</div>
           <div v-else>-</div>
-          <div @click="()=>goUserPage(gameStore.game?.rival.id)" class="flex cursor-pointer items-center justify-end flex-col">
+          <div @click="()=>goUserPage(gameStore.game?.rival?.id)" class="flex cursor-pointer items-center justify-end flex-col">
             <div class="relative">
               <king-icon-vue v-if="gameStore.game.rival.id == gameStore.game.winner?.id"
                              class="absolute w-[40px] h-[40px] -top-[20px] -rotate-[20deg] -left-[5px] z-10"></king-icon-vue>

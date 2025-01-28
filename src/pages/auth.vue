@@ -43,7 +43,9 @@ onMounted(async ()=>{
 
     }
     catch (error) {
+      //@ts-ignore
       if (error?.response?.data) {
+        //@ts-ignore
         showNotify(error!.response.data.detail);
         showToast('Перенаправляем на главный экран...');
         setTimeout(()=>{
