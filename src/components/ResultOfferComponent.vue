@@ -12,6 +12,17 @@ const gameStore = useGameStore();
 
 
 async function onClickSubmitResultSave(action_type: string = 'offer') {
+
+  if (stepperValueAuthor.value < 0 || stepperValueRival.value < 0) {
+    showToast("Счет не может быть меньше нуля !")
+    return;
+  }
+
+  if (stepperValueAuthor.value == stepperValueRival.value) {
+    showToast("Счет не может быть ничьей")
+    return;
+  }
+
   isLoadingApprove.value = true;
   try {
     const res = await gameStore.approveResult(gameStore.game!.id, {

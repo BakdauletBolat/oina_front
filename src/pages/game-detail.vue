@@ -176,7 +176,6 @@ function goUserPage(id: number | undefined) {
    </main>
    <van-cell-group class="mt-2" v-if="gameStore.game != null">
      <van-cell v-for="item in gameStore.game.ratings" :key="item.created_at.toString()">
-
        <template #title>
          <span class="text-nowrap" v-if="item.point > 0"><span class="font-bold">{{ item.user.username }}</span> поднял свой рейтинг</span>
          <span class="text-nowrap" v-else><span class="font-bold">{{ item.user.username }}</span> опустился в рейтинге</span>
