@@ -139,7 +139,7 @@ function goUserPage(id: number | undefined) {
         </div>
       </section>
       <game-owner-component class="px-4" :game="gameStore.game" v-if="gameStore.game.status == 1">
-        <section v-if="userStore.isAuthor(gameStore.game.author.id) && gameStore.game.result == null">
+        <section v-if="gameStore.game.result == null">
           <van-button @click="gameStore.toggleResultOffer" plain type="primary" block>Создать счёт матча</van-button>
         </section>
       </game-owner-component>
@@ -151,7 +151,7 @@ function goUserPage(id: number | undefined) {
 
       <section v-if="gameStore.game.status != 3" class="mt-4 px-4">
         <div class="text-sm" v-if="gameStore.game.result?.offered_user_id != null">
-          {{gameStore.getOfferedUser()!.username}} предложил счёт: Хозяева 2 – 5 Гости.
+          {{gameStore.getOfferedUser()!.username}} предложил счёт: Хозяева {{gameStore.game.result.game.author_score}} – {{gameStore.game.result.game.rival_score}} Гости.
         </div>
         <div class="text-xs mt-2 text-gray-500" v-if="gameStore.isOfferedUser(userStore.user?.id)">
           Ваш счёт отправлен. Ждём, пока соперник его подтвердит.
