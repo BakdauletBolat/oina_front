@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+:root {
+    --van-grid-item-content-padding: 15px!important;
+}

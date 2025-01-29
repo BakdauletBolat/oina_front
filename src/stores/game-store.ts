@@ -28,6 +28,12 @@ interface Author {
     last_name: string;
 }
 
+interface Rating {
+    user: Author;
+    point: number;
+    created_at: Date
+}
+
 export interface Game {
     id: number;
     author: Author;
@@ -49,6 +55,7 @@ export interface Game {
     winner: Author | null;
     loser: Author | null;
     status: number;
+    ratings: Rating[]
 }
 
 interface GameListResponse {
@@ -62,6 +69,8 @@ export const useGameStore = defineStore('game-store', {
             isLoadingListGames: false,
             isLoadingGame: false,
             games: [] as Game[],
+            lostGames: [] as Game[],
+            winnGames: [] as Game[],
             myGames: [] as Game[],
             game: null as Game | null,
             showResultOfferComponent: false,
@@ -118,6 +127,63 @@ export const useGameStore = defineStore('game-store', {
             }
             catch (error) {
 
+            }finally {
+                this.isLoadingListGames = false;
+            }
+        },
+        async loadLostGames() {
+            this.isLoadingListGames = true;
+            try {
+
+                const games = getFromCache('lost-screen-games')
+                if (games) {
+                    this.lostGames = games;
+                }
+
+                const res = await axiosInstance.get<GameListResponse>('/games/lose-user-games/');
+                this.lostGames = res.data.results;
+
+                setToCache('lost-screen-games', res.data.results);
+            }
+            catch (error) {
+
+            }finally {
+                this.isLoadingListGames = false;
+            }
+        },
+        async loadWinGames() {
+            this.isLoadingListGames = true;
+            try {
+
+                const games = getFromCache('win-screen-games')
+                if (games) {
+                    this.winnGames = games;
+                }
+
+                const res = await axiosInstance.get<GameListResponse>('/games/winning-user-games/');
+                this.winnGames = res.data.results;
+
+                setToCache('win-screen-games', res.data.results);
+            }
+            catch (error) {
+
+            }finally {
+                this.isLoadingListGames = false;
+            }
+        },
+        async loadFinishedGames() {
+            this.isLoadingListGames = true;
+            try {
+                const games = getFromCache('finished-screen-games')
+                if (games) {
+                    this.games = games;
+                }
+                const res = await axiosInstance.get<GameListResponse>('/games/?status=3');
+                this.games = res.data.results;
+                setToCache('finished-screen-games', res.data.results);
+            }
+            catch (error) {
+                console.log(error)
             }finally {
                 this.isLoadingListGames = false;
             }

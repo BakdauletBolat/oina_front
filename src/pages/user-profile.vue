@@ -16,6 +16,13 @@ const isLoadingCreateGame = ref(false);
 onMounted(async ()=>{
   const id = parseInt(route.params.userId.toString());
   isLoading.value = true;
+
+  if (id === userStore.user?.id) {
+    await router.push({
+      name: "selection"
+    });
+    return;
+  }
   try {
     const res = await userStore.loadProfile(id);
     user.value = res.data;
@@ -51,7 +58,9 @@ async function createGame() {
   catch (error) {
     showToast("Что то пошло не так при созданий игры");
   }
-  finally {}
+  finally {
+    isLoadingCreateGame.value = false;
+  }
 }
 
 </script>
@@ -89,7 +98,7 @@ async function createGame() {
     </section>
     <section class="mt-4 px-4" v-if="user" >
       <van-button @click="createGame" :loading="isLoadingCreateGame"
-                  block type="primary" >Играть вместе с {{user?.first_name ?? user?.username}}</van-button>
+                  block type="primary" >Записать матч вместе с {{user?.first_name ?? user?.username}}</van-button>
     </section>
   </main>
 </template>

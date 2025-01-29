@@ -37,6 +37,14 @@ export const useUserStore = defineStore('user-store', {
             searchText: ''
         }
     },
+    getters: {
+        bestTreePlayers: (state) => {
+            return state.users.slice(0,3)
+        },
+        otherPlayers: (state) => {
+            return state.users.slice(3);
+        }
+    },
     actions: {
         async loginWithTelegram(tgAuthToken: string) {
             return axiosInstance.post<LoginResponseInterface>(`/users/auth/`, {

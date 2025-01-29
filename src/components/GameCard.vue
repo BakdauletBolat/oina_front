@@ -37,7 +37,7 @@ function getColorByStatusGame(status: number) {
         <div class="flex gap-4 items-center">
           <van-image round width="25" height="25"
                      :src="game.author.photo_url"></van-image>
-          <div>{{ game.author.first_name }}</div>
+          <div>{{ game.author.first_name ?? game.author.username }}</div>
         </div>
         <div v-if="game.status == 3">{{ game.result?.game.author_score }}</div>
       </div>
@@ -47,7 +47,7 @@ function getColorByStatusGame(status: number) {
               }">
           <van-image round width="25" height="25"
                      :src="game.rival.photo_url"></van-image>
-          <div>{{ game.rival.first_name }}</div>
+          <div>{{ game.rival.first_name ?? game.rival.username }}</div>
         </div>
         <div v-if="game.status == 3">{{ game.result?.game.rival_score }}</div>
       </div>

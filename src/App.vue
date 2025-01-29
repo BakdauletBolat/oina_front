@@ -21,7 +21,7 @@ const route = useRoute();
 
 
 
-const activeTabBar = ref();
+const activeTabBar = ref(0);
 
 
 function onChange(index: number) {
@@ -44,8 +44,8 @@ onMounted(async () => {
   <main class="!bg-[#F7F7F7] min-h-screen">
     <section >
       <van-tabbar v-model="activeTabBar">
-        <van-tabbar-item @click="()=>onChange(0)" icon="home-o">Главная</van-tabbar-item>
-        <van-tabbar-item @click="()=>onChange(1)" icon="setting-o">Профиль</van-tabbar-item>
+        <van-tabbar-item @click="()=>onChange(0)" :icon="activeTabBar == 0 ? 'wap-home' : 'wap-home-o'">Главная</van-tabbar-item>
+        <van-tabbar-item @click="()=>onChange(1)" :icon="activeTabBar == 1 ? 'contact' : 'contact-o'">Профиль</van-tabbar-item>
       </van-tabbar>
     </section>
     <RouterView/>
