@@ -143,6 +143,11 @@ function goUserPage(id: number | undefined) {
           <van-button @click="gameStore.toggleResultOffer" plain type="primary" block>Создать счёт матча</van-button>
         </section>
       </game-owner-component>
+      <game-owner-component class="px-4" :game="gameStore.game" v-if="gameStore.game.status == 0">
+        <section v-if="!userStore.isAuthor(gameStore.game.author.id)">
+          <van-button @click="gameStore.startGame" :loading="gameStore.isLoadingGameStart" plain type="primary" block>Принять игру</van-button>
+        </section>
+      </game-owner-component>
 
       <section v-if="gameStore.game.status != 3" class="mt-4 px-4">
         <div class="text-sm" v-if="gameStore.game.result?.offered_user_id != null">

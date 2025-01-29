@@ -65,11 +65,26 @@ export const useGameStore = defineStore('game-store', {
             myGames: [] as Game[],
             game: null as Game | null,
             showResultOfferComponent: false,
+            isLoadingGameStart: false,
         }
     },
     actions: {
         async create(body: RequestCreateInterface) {
             return axiosInstance.post(`/games/request/`, body)
+        },
+        async startGame(id: number) {
+            this.isLoadingGameStart = true;
+            try {
+                const res = await axiosInstance.get<Game>(`/games/${id}/start/`);
+                this.game = res.data;
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                this.isLoadingGameStart = false
+            }
+            
         },
         async approveResult(id: number, body: ApproveResultInterface) {
             return axiosInstance.post(`/games/${id}/approve/`, body)
