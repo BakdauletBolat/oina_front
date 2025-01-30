@@ -10,6 +10,9 @@ import {useUserStore} from "./stores/user-store.ts";
 import BestPlayers from "./pages/best-players.vue";
 import LostGames from "./pages/lost-games.vue";
 import WinnGames from "./pages/winn-games.vue";
+import TournamentList from "./pages/tournament/tournament-list.vue";
+import TournamentDetail from "./pages/tournament/tournament-detail.vue";
+import TournamentCreate from "./pages/tournament/tournament-create.vue";
 
 const routes = [
     { path: '/', component: HomePage, name: 'home' },
@@ -20,6 +23,9 @@ const routes = [
     { path: '/best-players', component: BestPlayers, name: 'best-players'},
     { path: '/lost-games', component: LostGames, name: 'lost-games' },
     { path: '/winning-games', component: WinnGames, name: 'winning-games' },
+    { path: '/tournaments', component: TournamentList, name: 'tournaments' },
+    { path: '/tournament/:tournamentId', component: TournamentDetail, name: 'tournament-detail' },
+    { path: '/tournament/create', component: TournamentCreate, name: 'tournament-create', meta: { requiresAuth: true } },
     { path: '/auth', component: AuthPage, name: 'auth' },
 ]
 

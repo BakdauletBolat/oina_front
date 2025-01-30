@@ -41,15 +41,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="!bg-[#F7F7F7] min-h-screen">
-    <section >
-      <van-tabbar v-model="activeTabBar">
-        <van-tabbar-item @click="()=>onChange(0)" :icon="activeTabBar == 0 ? 'wap-home' : 'wap-home-o'">Главная</van-tabbar-item>
-        <van-tabbar-item @click="()=>onChange(1)" :icon="activeTabBar == 1 ? 'contact' : 'contact-o'">Профиль</van-tabbar-item>
-      </van-tabbar>
+  <main >
+    <section class="!bg-[#F7F7F7] min-h-screen">
+      <RouterView/>
     </section>
-    <RouterView/>
+    <van-tabbar class="!bg-white z-[100px]" v-model="activeTabBar">
+      <van-tabbar-item @click="()=>onChange(0)" :icon="activeTabBar == 0 ? 'wap-home' : 'wap-home-o'">Главная</van-tabbar-item>
+      <van-tabbar-item @click="()=>onChange(1)" :icon="activeTabBar == 1 ? 'contact' : 'contact-o'">Профиль</van-tabbar-item>
+    </van-tabbar>
   </main>
+
 </template>
 
 <style scoped>

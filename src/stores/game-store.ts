@@ -55,7 +55,9 @@ export interface Game {
     winner: Author | null;
     loser: Author | null;
     status: number;
-    ratings: Rating[]
+    ratings: Rating[];
+    tournament_id: number;
+    ordering: number;
 }
 
 interface GameListResponse {

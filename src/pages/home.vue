@@ -43,10 +43,12 @@ function onClickCard(id: number){
           <van-icon name="add" color="#36CFC9" size="28"></van-icon>
           <p class="text-xs mt-2  text-center text-nowrap">Начать матч</p>
         </router-link>
-        <div class="flex bg-white p-4 flex-col items-center justify-center border border-gray-100 rounded">
+        <router-link :to="{
+          name: 'tournaments'
+        }" class="flex bg-white p-4 flex-col items-center justify-center border border-gray-100 rounded">
           <van-icon name="award" color="#07C160" size="28"></van-icon>
           <p class="text-xs mt-2  text-center text-nowrap">Турниры</p>
-        </div>
+        </router-link>
       </div>
     </section>
     <section class="section" v-if="gameStore.games.length > 0">

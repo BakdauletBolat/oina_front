@@ -9,6 +9,7 @@ import {Icon, Loading, showToast} from "vant";
 import {useUserStore} from "../stores/user-store.ts";
 import GameOwnerComponent from "../components/GameOwnerComponent.vue";
 import ResultOfferComponent from "../components/ResultOfferComponent.vue";
+import OrganizatorComponent from "../components/OrganizatorComponent.vue";
 
 const gameStore = useGameStore();
 const userStore = useUserStore();
@@ -139,38 +140,48 @@ function goUserPage(id: number | undefined) {
            </div>
          </div>
        </section>
-       <game-owner-component class="px-4" :game="gameStore.game" v-if="gameStore.game.status == 1">
-         <section v-if="gameStore.game.result == null">
-           <van-button @click="gameStore.toggleResultOffer" plain type="primary" block>Создать счёт матча</van-button>
-         </section>
-       </game-owner-component>
-       <game-owner-component class="px-4" :game="gameStore.game" v-if="gameStore.game.status == 0">
-         <section v-if="!userStore.isAuthor(gameStore.game.author.id)">
-           <van-button @click="gameStore.startGame" :loading="gameStore.isLoadingGameStart" plain type="primary" block>Принять игру</van-button>
-         </section>
-       </game-owner-component>
+       <div v-if="gameStore.game.tournament_id == null">
+         <game-owner-component class="px-4" :game="gameStore.game" v-if="gameStore.game.status == 1">
+           <section v-if="gameStore.game.result == null">
+             <van-button @click="gameStore.toggleResultOffer" plain type="primary" block>Создать счёт матча</van-button>
+           </section>
+         </game-owner-component>
+         <game-owner-component class="px-4" :game="gameStore.game" v-if="gameStore.game.status == 0">
+           <section v-if="!userStore.isAuthor(gameStore.game.author.id)">
+             <van-button @click="gameStore.startGame" :loading="gameStore.isLoadingGameStart" plain type="primary" block>Принять игру</van-button>
+           </section>
+         </game-owner-component>
 
-       <section v-if="gameStore.game.status != 3" class="mt-4 px-4">
-         <div class="text-sm" v-if="gameStore.game.result?.offered_user_id != null">
-           {{gameStore.getOfferedUser()!.username}} предложил счёт: Хозяева {{gameStore.game.result.game.author_score}} – {{gameStore.game.result.game.rival_score}} Гости.
+         <section v-if="gameStore.game.status != 3" class="mt-4 px-4">
+           <div class="text-sm" v-if="gameStore.game.result?.offered_user_id != null">
+             {{gameStore.getOfferedUser()!.username}} предложил счёт: Хозяева {{gameStore.game.result.game.author_score}} – {{gameStore.game.result.game.rival_score}} Гости.
+           </div>
+           <div class="text-xs mt-2 text-gray-500" v-if="gameStore.isOfferedUser(userStore.user?.id)">
+             Ваш счёт отправлен. Ждём, пока соперник его подтвердит.
+           </div>
+         </section>
+         <game-owner-component v-if="gameStore.game.status == 2 && gameStore.isApproveUser(userStore.user?.id)"
+                               class="px-4 mt-4" :game="gameStore.game" >
+           <van-button @click="finishGame" :loading="isLoadingFinishGame" type="primary" block>Подтвердить счет</van-button>
+           <div class="flex items-center justify-center gap-2 mt-4">
+             <van-button size="small" @click="gameStore.toggleResultOffer">Предложить свой вариант</van-button>
+             <van-popover>
+               <div class="p-1 text-xs">Не нашли подходящий вариант? Укажите свой.</div>
+               <template #reference>
+                 <van-icon name="question"></van-icon>
+               </template>
+             </van-popover>
+           </div>
+         </game-owner-component>
+       </div>
+       <div v-else class="px-4">
+         <div v-if="gameStore.game.status != 3" class="text-xs mt-2 text-gray-500">
+          Ждём, пока организатор закончить игру
          </div>
-         <div class="text-xs mt-2 text-gray-500" v-if="gameStore.isOfferedUser(userStore.user?.id)">
-           Ваш счёт отправлен. Ждём, пока соперник его подтвердит.
-         </div>
-       </section>
-       <game-owner-component v-if="gameStore.game.status == 2 && gameStore.isApproveUser(userStore.user?.id)"
-                             class="px-4 mt-4" :game="gameStore.game" >
-         <van-button @click="finishGame" :loading="isLoadingFinishGame" type="primary" block>Подтвердить счет</van-button>
-         <div class="flex items-center justify-center gap-2 mt-4">
-           <van-button size="small" @click="gameStore.toggleResultOffer">Предложить свой вариант</van-button>
-           <van-popover>
-             <div class="p-1 text-xs">Не нашли подходящий вариант? Укажите свой.</div>
-             <template #reference>
-               <van-icon name="question"></van-icon>
-             </template>
-           </van-popover>
-         </div>
-       </game-owner-component>
+       </div>
+       <OrganizatorComponent v-if="gameStore.game.status != 3" class="px-4 mt-4">
+         <van-button type="primary" block @click="gameStore.toggleResultOffer">Записать результат матча</van-button>
+       </OrganizatorComponent>
        <result-offer-component></result-offer-component>
      </div>
    </main>

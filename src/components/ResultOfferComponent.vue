@@ -3,14 +3,36 @@
 import {showToast} from "vant";
 import {ref} from "vue";
 import {useGameStore} from "../stores/game-store.ts";
+import OrganizatorComponent from "./OrganizatorComponent.vue";
+import {useTournamentOrganizerStore} from "../stores/tournament-organizer-store.ts";
 
 const stepperValueAuthor = ref<number>(0);
 const stepperValueRival = ref<number>(0);
 const isLoadingApprove = ref<boolean>(false);
 
 const gameStore = useGameStore();
+const tournamentOrganizerStore = useTournamentOrganizerStore();
 
+async function onClickRecord() {
 
+  try {
+    const res = await tournamentOrganizerStore.recordGameResult(gameStore.game!.id, gameStore.game!.tournament_id, {
+      game: {
+        author_score: stepperValueAuthor.value,
+        rival_score: stepperValueRival.value,
+      }
+    })
+    showToast("Успешно записан матч")
+    gameStore.toggleResultOffer();
+    console.log(res);
+    gameStore.game = res;
+  }
+  catch (error) {
+    showToast("При отправке что то не так повторите позднее")
+    console.error(error)
+  }
+
+}
 async function onClickSubmitResultSave(action_type: string = 'offer') {
 
   if (stepperValueAuthor.value < 0 || stepperValueRival.value < 0) {
@@ -64,7 +86,14 @@ async function onClickSubmitResultSave(action_type: string = 'offer') {
           </div>
         </div>
         <div class="mt-4">
-          <van-button type="primary" block @click="()=>onClickSubmitResultSave()" :loading="isLoadingApprove">Создать</van-button>
+          <OrganizatorComponent>
+            <van-button type="primary" block @click="()=>onClickRecord()" :loading="tournamentOrganizerStore.isLoading">Создать</van-button>
+          </OrganizatorComponent>
+          <van-button v-if="gameStore.game?.tournament_id == null"
+                      type="primary"
+                      block
+                      @click="()=>onClickSubmitResultSave()"
+                      :loading="isLoadingApprove">Создать</van-button>
         </div>
       </div>
     </van-action-sheet>

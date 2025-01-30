@@ -18,6 +18,7 @@ export interface User {
     first_name?: string,
     winning_sum: number,
     lost_sum: number;
+    role: string;
 }
 
 interface UsersResponseInterface {
@@ -106,6 +107,10 @@ export const useUserStore = defineStore('user-store', {
                     return;
                 }
                 this.users.push(...res.data.results);
+            }
+            catch (error) {
+                this.isFinished = true;
+                console.log(error);
             }
             finally {
                 this.isLoadingUsers = false;
