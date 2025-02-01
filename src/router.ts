@@ -13,22 +13,28 @@ import WinnGames from "./pages/winn-games.vue";
 import TournamentList from "./pages/tournament/tournament-list.vue";
 import TournamentDetail from "./pages/tournament/tournament-detail.vue";
 import TournamentCreate from "./pages/tournament/tournament-create.vue";
+import OrganizerLogin from "./pages/organizer-login.vue";
 
 const routes = [
-    { path: '/', component: HomePage, name: 'home' },
-    { path: '/profile', component: SelectionPage, name: 'selection' },
-    { path: '/users/:userId', component: UserProfile, name: 'user-profile' },
-    { path: '/game/:gameId', component: GameDetail, name: 'game-detail' },
-    { path: '/start-game', component: StartGame, name: 'start-game', meta: { requiresAuth: true }},
-    { path: '/best-players', component: BestPlayers, name: 'best-players'},
-    { path: '/lost-games', component: LostGames, name: 'lost-games' },
-    { path: '/winning-games', component: WinnGames, name: 'winning-games' },
-    { path: '/tournaments', component: TournamentList, name: 'tournaments' },
-    { path: '/tournament/:tournamentId', component: TournamentDetail, name: 'tournament-detail' },
-    { path: '/tournament/create', component: TournamentCreate, name: 'tournament-create', meta: { requiresAuth: true } },
-    { path: '/auth', component: AuthPage, name: 'auth' },
+    {path: '/', component: HomePage, name: 'home'},
+    {path: '/profile', component: SelectionPage, name: 'selection'},
+    {path: '/users/:userId', component: UserProfile, name: 'user-profile'},
+    {path: '/game/:gameId', component: GameDetail, name: 'game-detail'},
+    {path: '/start-game', component: StartGame, name: 'start-game', meta: {requiresAuth: true}},
+    {path: '/best-players', component: BestPlayers, name: 'best-players'},
+    {path: '/lost-games', component: LostGames, name: 'lost-games'},
+    {path: '/winning-games', component: WinnGames, name: 'winning-games'},
+    {path: '/tournaments', component: TournamentList, name: 'tournaments'},
+    {path: '/tournament/:tournamentId', component: TournamentDetail, name: 'tournament-detail'},
+    {
+        path: '/tournament/create', component: TournamentCreate, name: 'tournament-create',
+        meta: {
+            requiresOrganizer: true
+        }
+    },
+    {path: '/auth', component: AuthPage, name: 'auth'},
+    {path: '/auth/organizer', component: OrganizerLogin, name: 'organizer-login'},
 ]
-
 
 
 const router = createRouter({
@@ -47,7 +53,13 @@ router.beforeEach(async (to, _) => {
 
     ) {
         // redirect the user to the login page
-        return { name: 'selection' }
+        return {name: 'selection'}
+    }
+    if (to.meta.requiresOrganizer) {
+        await userStore.loadUser();
+        if (userStore.user == null || userStore.user!.role != 'organizer') {
+            return {name: 'organizer-login'};
+        }
     }
 })
 

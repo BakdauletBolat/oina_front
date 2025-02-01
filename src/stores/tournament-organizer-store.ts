@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import axiosInstance from '../api/network';
 import type {Game} from "./game-store.ts";
+import type {User} from "./user-store.ts";
 
 
 export interface TournamentDetailInterface {
@@ -10,11 +11,13 @@ export interface TournamentDetailInterface {
     start_date: string;
     end_date: string | null;
     status: number;
+    winner: User
+    winner_point: number;
 }
 
 export interface TournamentCreateInterface {
     name: string;
-    users_ids: number;
+    users_ids: number[];
 }
 
 export interface TournamentResultRecordBodyInterface {
@@ -34,14 +37,16 @@ export const useTournamentOrganizerStore = defineStore('tournament-organizer-sto
         return {
             isLoadingCreate: false,
             isLoading: false,
+            isLoadingFinish: false,
         }
     },
 
     actions: {
+
         async createTournamentOrganizer(body: TournamentCreateInterface) {
             this.isLoadingCreate = true;
             try {
-                const res = await axiosInstance.post<TournamentCreateResponseInterface>('/api/tournament/', body);
+                const res = await axiosInstance.post<TournamentCreateResponseInterface>('/tournaments/', body);
                 return res.data.id;
             }
             catch (error) {
@@ -64,6 +69,19 @@ export const useTournamentOrganizerStore = defineStore('tournament-organizer-sto
                 this.isLoading = false;
             }
             return null;
+        },
+        async finishTournament(id: number): Promise<TournamentDetailInterface | undefined> {
+            this.isLoadingFinish = true;
+            try {
+                const res = await axiosInstance.post<TournamentDetailInterface>(`/tournaments/finish/${id}/`);
+                return res.data;
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                this.isLoadingFinish = false;
+            }
         }
     }
 })

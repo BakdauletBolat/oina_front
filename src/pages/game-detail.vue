@@ -10,6 +10,7 @@ import {useUserStore} from "../stores/user-store.ts";
 import GameOwnerComponent from "../components/GameOwnerComponent.vue";
 import ResultOfferComponent from "../components/ResultOfferComponent.vue";
 import OrganizatorComponent from "../components/OrganizatorComponent.vue";
+import {share} from "../plugins/shareLink.ts";
 
 const gameStore = useGameStore();
 const userStore = useUserStore();
@@ -89,7 +90,13 @@ function goUserPage(id: number | undefined) {
          left-text="Назад"
          left-arrow
          @click-left="goBack"
-     />
+     >
+       <template #right>
+         <van-icon name="share" @click="()=>{
+          share(`/game/${gameStore.game!.id}`,'Поделиться игрой')
+        }"></van-icon>
+       </template>
+     </van-nav-bar>
      <div v-if="gameStore.isLoadingGame" class="h-screen flex justify-center items-center">
        <loading color="#0094ff" size="24px" text-color="#0094ff" vertical>
          <template #icon>

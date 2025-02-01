@@ -12,6 +12,8 @@ export interface TournamentListInterface {
     end_date: string | null;
     status: number;
     organizer: User;
+    winner?: User
+    winner_point: number;
 }
 
 export interface TournamentUserStatInterface {

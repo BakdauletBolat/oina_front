@@ -91,7 +91,7 @@ async function createGame() {
     </div>
     <section class="mt-4" v-if="user">
       <van-cell-group>
-        <van-cell title="Мои рейтинг" :value="user.rating_sum"/>
+        <van-cell title="Рейтинг игрока" :value="user.rating_sum"/>
         <van-cell title="Выигранные матчи" :value="user.winning_sum"/>
         <van-cell title="Проигранные матчи" :value="user.lost_sum"/>
       </van-cell-group>

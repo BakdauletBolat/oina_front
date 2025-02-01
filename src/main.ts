@@ -4,7 +4,7 @@ import router from './router'
 import {
     Form, Field, CellGroup, Cell, Button, Image as VanImage,
     Tabbar, TabbarItem, Notify, Toast, FloatingPanel, List, Search, ActionSheet,
-    Dialog, Grid, GridItem, Divider, Icon, Tag, NavBar, Stepper, Popover
+    Dialog, Grid, GridItem, Divider, Icon, Tag, NavBar, Stepper, Popover, Loading
 } from 'vant';
 import { createPinia } from 'pinia'
 import 'vant/lib/index.css';
@@ -39,5 +39,6 @@ app.use(Tag);
 app.use(NavBar);
 app.use(Stepper);
 app.use(Popover);
+app.use(Loading);
 
 app.mount('#app')

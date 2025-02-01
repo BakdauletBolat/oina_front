@@ -21,6 +21,11 @@ export interface User {
     role: string;
 }
 
+export interface LoginRequestBodyInterface {
+    username: string;
+    password: string;
+}
+
 interface UsersResponseInterface {
     results: User[];
     next: string | null;
@@ -51,6 +56,12 @@ export const useUserStore = defineStore('user-store', {
             return axiosInstance.post<LoginResponseInterface>(`/users/auth/`, {
                 token: tgAuthToken,
                 source: 'telegram'
+            })
+        },
+        async loginWithDjango(body: LoginRequestBodyInterface) {
+            return axiosInstance.post<LoginResponseInterface>(`/users/auth/`, {
+                ...body,
+                source: 'django'
             })
         },
         isGameOwner(ids: number[]) {
